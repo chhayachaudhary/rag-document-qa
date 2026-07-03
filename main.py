@@ -1,8 +1,11 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from app.routes.auth import router as auth_router
 from app.database import engine, Base
 from app.models.user import User
+from app.routes.document import router as document_router
+from app.routes.qa import router as qa_router
 import os
 
 load_dotenv()
@@ -16,7 +19,17 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(auth_router)
+app.include_router(document_router)
+app.include_router(qa_router)
 
 @app.get("/")
 def home():
@@ -25,3 +38,4 @@ def home():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+

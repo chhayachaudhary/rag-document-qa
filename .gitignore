@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 app.db
 .DS_Store
+chroma_db/
